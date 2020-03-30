@@ -3,10 +3,14 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href=".\style\main.css">
     <title>Proiect tehnologii WEB</title>
-    <script src=".\dependencies\p5.min.js"></script>
-    <script type="module" src=".\script\page_4.js"></script>
+    
+    <link rel="stylesheet" href="style/main.css">
+    <link rel="stylesheet" href="style/page_4.css">
+    
+    <script type="text/javascript" src="dependencies/p5.min.js"></script>
+    <script type="text/javascript" src="dependencies/p5.collide2d.min.js"></script>
+    <script type="module" src="script/page_4.js"></script>
   </head>
   <body>
     <div class="page">
@@ -22,9 +26,15 @@
         </div>
       <div class="main">
         <div class="card">
+          <button id="start-c1" class="styled-button">Start</button>
+          <button id="stop-c1" class="styled-button">Stop</button>
+          <button id="reset-c1" class="styled-button">Reset</button>
           <div class='cavans' id='canvas_1'></div>
         </div>
         <div class="card">
+          <button id="start-c2" class="styled-button">Start</button>
+          <button id="stop-c2" class="styled-button">Stop</button>
+          <button id="reset-c2" class="styled-button">Reset</button>
           <div class='canvas' id='canvas_2'></div>
         </div>
       </div>
