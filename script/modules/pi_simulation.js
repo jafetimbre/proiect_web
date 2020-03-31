@@ -7,6 +7,8 @@ export default class pi_simulation {
   }
 
   scetch = p => {
+    var width = 600;
+    var height = 400;
     var box1;
     var box2;
     var countDiv;
@@ -31,10 +33,12 @@ export default class pi_simulation {
     });
 
     p.setup = () => {
-      p.createCanvas(600, 480);
+      p.createCanvas(width, height);
       p.background(20);
-      box1 = new Box(200, 50, 1, 0, 0);
-      box2 = new Box(400, 100, value, -2 / timeStep, 50);
+      p.fill(10);
+      p.rect(10,10,100,100);
+      box1 = new Box(200, 50, 1, 0, 50);
+      box2 = new Box(400, 100, value, -2 / timeStep, 100);
       countDiv = p.createDiv(count);
       countDiv.style('font-size', '30pt');
       p.noLoop();
@@ -42,6 +46,9 @@ export default class pi_simulation {
   
     p.draw = () => {
       p.background(50);
+
+      p.fill(10);
+      p.rect(0,height-300,50,300);
       for (let i = 0; i < timeStep; ++i) {
   
         if (box1.collide(box2)) {
@@ -68,8 +75,8 @@ export default class pi_simulation {
       count = 0;
       box1 = null;
       box2 = null;
-      box1 = new Box(200, 50, 1, 0, 0);
-      box2 = new Box(400, 100, value, -2 / timeStep, 50);
+      box1 = new Box(200, 50, 1, 0, 50);
+      box2 = new Box(400, 100, value, -2 / timeStep, 100);
       p.noLoop();
     };
 
@@ -83,7 +90,7 @@ export default class pi_simulation {
         this.xConst = xC;
       }
       hitWall() {
-        return (this.x <= 0);
+        return (this.x <= 50);
       }
       reverse() {
         this.v *= -1;

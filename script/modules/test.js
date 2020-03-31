@@ -10,7 +10,8 @@ export default class test {
     this.running = false;
 
     this.entities = null;
-    this.nrOfEntities = 200;
+    this.nrOfEntities = 100;
+    this.dist = [...Array(this.width/5)].map(elem => new Array(this.height/5));
   }
 
   scetch = p => {
@@ -38,10 +39,10 @@ export default class test {
       // this.entities[1].type = this.EntityType.INFECTIOUS;
       // this.entities[0].size = 100;
       // this.entities[1].size = 100;
-      this.entities[0].position.x = 110;
-      this.entities[0].position.y = 110;
-      this.entities[1].position.x = 100;
-      this.entities[1].position.y = 100;
+      // this.entities[0].position.x = 110;
+      // this.entities[0].position.y = 110;
+      // this.entities[1].position.x = 100;
+      // this.entities[1].position.y = 100;
     }
     p.draw = () => {
       p.background(this.backgroundColor);
@@ -96,6 +97,8 @@ export default class test {
 
       this.type = this.host.EntityType.SUSCEPTIBLE;
       this.aura = 30;
+
+      this.host.dist[Math.floor(this.position.y/5)][Math.floor(this.position.x/5)] = this;
     }
     update = () => {
       if (this.timesMoved >= this.moveThreshold) {
