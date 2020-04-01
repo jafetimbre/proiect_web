@@ -107,7 +107,7 @@ export default class afisor {
     this.display = `x: ${this.transXInv(cx).toPrecision(3)}    y: ${this.transYInv(cy).toPrecision(3)}`;
   };
   transX = x => x + this.padding;
-  transXInv = x => this.p.map(x, this.padding, this.width-60, 0,30);
+  transXInv = x => this.p.map(x, this.padding, this.width-60, 0,50);
   transY = y => this.p.map(y, 0,30, this.height-this.padding,this.padding+this.padding/2);
   transYInv = y => this.p.map(y, this.height-this.padding, this.padding+this.padding/2, 0,30);
   update = () => {
