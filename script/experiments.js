@@ -2,7 +2,11 @@ import pi_simulation from './modules/pi_simulation.js'
 import test from './modules/test.js'
 import afisor from './modules/afisor.js'
 
-var myp5 = new p5(new afisor().scetch, 'canvas_0');
+var myp5 = new p5(new afisor([
+    document.getElementById("start-c0"),
+    document.getElementById("stop-c0"),
+    document.getElementById("reset-c0")
+]).scetch, 'canvas_0');
 
 var myp5 = new p5(new test([
     document.getElementById("start-c1"),

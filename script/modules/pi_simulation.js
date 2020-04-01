@@ -33,6 +33,7 @@ export default class pi_simulation {
     });
 
     p.setup = () => {
+      p.frameRate(60);
       p.createCanvas(width, height);
       p.background(20);
       p.fill(10);
