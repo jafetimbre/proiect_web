@@ -44,7 +44,6 @@ export default class afisor {
       p.background(this.backgroundColor);
     };
     p.draw = () => {
-      console.log(this.running + " \ " + this.hovered);
       p.background(this.backgroundColor);
       this.sinWave.render();
       if (this.running) {
