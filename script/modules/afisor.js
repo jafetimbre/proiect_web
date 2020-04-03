@@ -49,10 +49,11 @@ export default class afisor {
       if (this.running) {
         this.sinWave.calculate();
       }
-      if (this.sinWave.hasPoint(this.setPrec(p.mouseX, 2), this.setPrec(p.mouseY, 2)) && this.hovered === true) {
-        p.ellipse(p.mouseX, p.mouseY, 5);
-        this.drawMouse();
-        this.updateCord()
+      var col = this.sinWave.hasPoint(this.setPrec(p.mouseX, 2), this.setPrec(p.mouseY, 2));
+      if (col!= null && this.hovered === true) {
+        p.ellipse(col.x, col.y, 5);
+        this.drawMouse(col.x, col.y);
+        this.updateCord(col.x, col.y);
       }
       this.drawScales();
       var detection = 30
@@ -98,20 +99,18 @@ export default class afisor {
       }
     };
   };
-  updateCord() {
-    var cx = this.p.constrain(this.p.mouseX, this.padding, this.width - 60);
-    var cy = this.p.constrain(this.p.mouseY, this.padding + this.padding / 2, this.height - this.padding);
+  updateCord(x, y) {
+    var cx = this.p.constrain(x, this.padding, this.width - 60);
+    var cy = this.p.constrain(y, this.padding + this.padding / 2, this.height - this.padding);
     this.display = `x: ${this.transXInv(cx)}    y: ${this.transYInv(cy)}`;
     this.p.stroke(10);
     this.p.textSize(15);
     this.p.fill(10);
     this.p.text(this.display, this.width - this.padding - 60, this.padding - 15);
   };
-  drawMouse() {
+  drawMouse(x, y) {
     this.p.stroke(255, 0, 0);
-    var x = this.p.mouseX;
     var cX = this.p.constrain(x, this.padding, this.width - 60);
-    var y = this.p.mouseY;
     var cY = this.p.constrain(y, 60, this.height - this.padding);
     this.p.line(this.padding, cY, this.width - this.padding, cY);
     this.p.line(cX, this.height - this.padding, cX, this.padding);
@@ -156,13 +155,13 @@ class SinGraph {
     this.p.strokeWeight(1);
   }
   hasPoint(x, y) {
-    var precision = 2;
+    var precision = 5;
     for (var i = 0; i < this.values.length; i++) {
       if (Math.abs((i * this.xspacing + this.bounds.left) - x) <= precision &&
         Math.abs((this.origin + this.values[i]) - y) <= precision) {
-        return true;
+        return {x:i * this.xspacing + this.bounds.left, y: this.origin + this.values[i]};
       }
     }
-    return false;
+    return null;
   }
 }
