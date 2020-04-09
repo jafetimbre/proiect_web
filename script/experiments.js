@@ -1,5 +1,5 @@
 import pi_simulation from './modules/pi_simulation.js'
-import test from './modules/test.js'
+import virSim from './modules/virSim.js'
 import afisor from './modules/afisor.js'
 
 var myp5 = new p5(new afisor([
@@ -8,7 +8,7 @@ var myp5 = new p5(new afisor([
     document.getElementById("reset-c0")
 ]).scetch, 'canvas_0');
 
-var myp5 = new p5(new test([
+var myp5 = new p5(new virSim([
     document.getElementById("start-c1"),
     document.getElementById("stop-c1"),
     document.getElementById("reset-c1")

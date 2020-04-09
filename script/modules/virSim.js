@@ -1,4 +1,4 @@
-export default class test {
+export default class virSim {
   constructor(btns) {
     this.width = 600;
     this.height = 400;

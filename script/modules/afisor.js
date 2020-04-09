@@ -1,3 +1,5 @@
+import ajax from "../ajax.js";
+
 export default class afisor {
   constructor(btns) {
     this.width = 600;
@@ -14,12 +16,15 @@ export default class afisor {
     this.offsetY = Math.floor(this.height / 2);
     this.display = "Coordonates";
 
-    this.sinWave = null;
+    this.graph = null;
 
     this.init();
   };
 
   init() {
+    //  TODO: resolving ajax GET method
+    //ajax.get("http://davos.science.upm.ro/~traian/web_curs/ap_electric.php",  true);
+
     this.btns[0].addEventListener("click", () => {
       this.running = true;
       this.p.loop();
@@ -30,6 +35,7 @@ export default class afisor {
   }
   scetch = p => {
     p.setup = () => {
+      
       p.frameRate(30);
       this.canvas = p.createCanvas(this.width, this.height);
       this.canvas.mouseOver(() => {
@@ -37,19 +43,36 @@ export default class afisor {
         p.loop();
       });
       this.p = p;
-      this.sinWave = new SinGraph(p, {
+      this.graph = new Graph(p, {
         left: this.padding,
         right: 500
-      }, this.transY(15), 100.0, 200.0);
+      }, this.transY(0), 100.0, 200.0);
+
+      setInterval(() => {
+        if (this.running) {
+          var res = ajax.get("http://davos.science.upm.ro/~traian/web_curs/ap_electric.php",  false);
+          var xmlDoc = new DOMParser().parseFromString(res, "text/xml");
+          var minVal = xmlDoc.documentElement.childNodes[23].textContent;
+          var maxVal = xmlDoc.documentElement.childNodes[25].textContent;
+          var val = xmlDoc.documentElement.childNodes[21].textContent;
+          var val = p.map(val, minVal, maxVal, 0, 30);
+          this.graph.set(val);
+        }
+      },1000);
+
       p.background(this.backgroundColor);
     };
     p.draw = () => {
+      
       p.background(this.backgroundColor);
-      this.sinWave.render();
+      this.graph.render();
       if (this.running) {
-        this.sinWave.calculate();
+        //this.sinWave.calculate();
+        // if (true) {
+        //   this.sinWave.set(Math.random()*200);
+        // }
       }
-      var col = this.sinWave.hasPoint(this.setPrec(p.mouseX, 2), this.setPrec(p.mouseY, 2));
+      var col = this.graph.hasPoint(this.setPrec(p.mouseX, 2), this.setPrec(p.mouseY, 2));
       if (col!= null && this.hovered === true) {
         p.ellipse(col.x, col.y, 5);
         this.drawMouse(col.x, col.y);
@@ -160,6 +183,49 @@ class SinGraph {
       if (Math.abs((i * this.xspacing + this.bounds.left) - x) <= precision &&
         Math.abs((this.origin + this.values[i]) - y) <= precision) {
         return {x:i * this.xspacing + this.bounds.left, y: this.origin + this.values[i]};
+      }
+    }
+    return null;
+  }
+}
+class Graph {
+  constructor(p, bounds, origin, f=null) {
+    this.p = p;
+    this.bounds = bounds;
+    this.origin = origin;
+    this.xspacing = 5;
+
+    this.maxPoints = Math.floor(this.bounds.right / this.xspacing);
+    this.values = new Array(this.maxPoints); //width
+    this.f = f;
+  }
+  set(value) {
+    this.values.push(value);
+    this.values.shift();
+  }
+  calculate() {}
+  render() {
+    this.p.stroke(51, 153, 255);
+    this.p.strokeWeight(2);
+    this.p.noFill();
+    this.p.beginShape();
+    for (let x = 0; x < this.values.length; x++) {
+      this.p.vertex(x * this.xspacing + this.bounds.left, this.origin - this.values[x] *10);
+      this.p.stroke(0);
+      this.p.strokeWeight(5);
+      this.p.point(x * this.xspacing + this.bounds.left, this.origin - this.values[x] *10);
+      this.p.stroke(51, 153, 255);
+      this.p.strokeWeight(2);
+    }
+    this.p.endShape();
+    this.p.strokeWeight(1);
+  }
+  hasPoint(x, y) {
+    var precision = 5;
+    for (var i = 0; i < this.values.length; i++) {
+      if (Math.abs((i * this.xspacing + this.bounds.left) - x) <= precision &&
+        Math.abs((this.origin - this.values[i] *10) - y) <= precision) {
+        return {x:i * this.xspacing + this.bounds.left, y: this.origin - this.values[i] *10};
       }
     }
     return null;
